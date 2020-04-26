@@ -189,7 +189,8 @@ int main(int argc, char const *argv[])
   		*nextjob = task_set[0].R;
   		*end = -1;
   		set_priority(getpid() , 50);
-
+		int flag = 1;
+	
   		while(1){
   			while(*nextjob > *timer && head == NULL){
   				do_nothing(1);
@@ -210,9 +211,14 @@ int main(int argc, char const *argv[])
 				}
 				i += 1; 
   			}//create task
-  			if(head == NULL)	continue;
+  			if(head == NULL){
+				flag = 1;				
+				continue;
+			}
   			else{
-  				head = head->next;
+				if(flag != 1)
+  					head = head->next;
+				flag = 0;
   				int next = head->id;
   				set_priority(task_set[next].pid , 99);
   				sched_yield();
